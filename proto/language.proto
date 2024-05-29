@@ -1,0 +1,20 @@
+syntax = "proto3";
+
+package language;
+
+message Translation {
+    string application = 1;
+    string page = 2;
+    string key = 3;
+    string lang = 4;
+    string value = 5;
+    string context = 6;
+}
+
+message TranslationsResponse {
+    repeated Translation translations = 1;
+}
+
+message GetTranslationByIdRequest {
+    int32 id = 1;
+}

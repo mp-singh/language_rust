@@ -1,0 +1,11 @@
+syntax = "proto3";
+
+package add_numbers;
+
+message AddNumbersRequest {
+    int32 a = 1;
+    int32 b = 2;
+}
+message AddNumbersResponse {
+    int32 message = 1;
+}

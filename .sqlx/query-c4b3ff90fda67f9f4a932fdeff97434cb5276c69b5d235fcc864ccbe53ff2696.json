@@ -1,0 +1,56 @@
+{
+  "db_name": "SQLite",
+  "query": "\n            SELECT * FROM translations WHERE id = $1\n            ",
+  "describe": {
+    "columns": [
+      {
+        "name": "id",
+        "ordinal": 0,
+        "type_info": "Int64"
+      },
+      {
+        "name": "application",
+        "ordinal": 1,
+        "type_info": "Text"
+      },
+      {
+        "name": "page",
+        "ordinal": 2,
+        "type_info": "Text"
+      },
+      {
+        "name": "key",
+        "ordinal": 3,
+        "type_info": "Text"
+      },
+      {
+        "name": "lang",
+        "ordinal": 4,
+        "type_info": "Text"
+      },
+      {
+        "name": "value",
+        "ordinal": 5,
+        "type_info": "Text"
+      },
+      {
+        "name": "context",
+        "ordinal": 6,
+        "type_info": "Text"
+      }
+    ],
+    "parameters": {
+      "Right": 1
+    },
+    "nullable": [
+      true,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false
+    ]
+  },
+  "hash": "c4b3ff90fda67f9f4a932fdeff97434cb5276c69b5d235fcc864ccbe53ff2696"
+}
