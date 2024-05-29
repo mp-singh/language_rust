@@ -46,5 +46,3 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
 
     Ok(())
 }
-
-// router.HandleFunc("/language/api/v1/applications", languageController.GetAll).Methods("GET")
