@@ -1,0 +1,13 @@
+syntax = "proto3";
+
+package health;
+
+message HealthCheckResponse {
+    ServingStatus status = 1;
+}
+
+enum ServingStatus {
+    GOOD = 0;
+    BAD = 1;
+    DEGRADED = 2;
+}

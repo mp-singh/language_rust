@@ -5,12 +5,23 @@ package base;
 import "hello.proto";
 import "add_numbers.proto";
 import "language.proto";
+import "health.proto";
 import "google/protobuf/empty.proto";
 
 
-service Root {
-    rpc HelloWorld(hello.HelloRequest) returns (hello.HelloResponse) {}
-    rpc AddNumbers(add_numbers.AddNumbersRequest) returns (add_numbers.AddNumbersResponse) {}
+service Translations {
     rpc GetAllTranslations(google.protobuf.Empty) returns (language.TranslationsResponse) {}
     rpc GetTranslationById(language.GetTranslationByIdRequest) returns (language.Translation) {}
+}
+
+service Hello {
+    rpc HelloWorld(hello.HelloRequest) returns (hello.HelloResponse) {}
+}
+
+service Numbers {
+    rpc AddNumbers(add_numbers.AddNumbersRequest) returns (add_numbers.AddNumbersResponse) {}
+}
+
+service Health {
+    rpc Check(google.protobuf.Empty) returns (health.HealthCheckResponse) {}
 }

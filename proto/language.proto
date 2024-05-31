@@ -18,3 +18,4 @@ message TranslationsResponse {
 message GetTranslationByIdRequest {
     int32 id = 1;
 }
+

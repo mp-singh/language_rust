@@ -1,8 +1,11 @@
-use crate::base::root_server::RootServer;
+use crate::base::{
+    health_server::HealthServer, hello_server::HelloServer, numbers_server::NumbersServer,
+    translations_server::TranslationsServer,
+};
 use log::info;
-use simplelog::{ColorChoice, CombinedLogger, Config, LevelFilter, TermLogger, TerminalMode};
+use simplelog::{ColorChoice, CombinedLogger, LevelFilter, TermLogger, TerminalMode};
+use std::{fs::File, io::Read};
 use tonic::transport::Server;
-
 pub mod hello {
     tonic::include_proto!("hello");
 }
@@ -14,6 +17,10 @@ pub mod add_numbers {
 }
 pub mod language {
     tonic::include_proto!("language");
+}
+
+pub mod health {
+    tonic::include_proto!("health");
 }
 
 mod db;
@@ -36,11 +43,27 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
 
     let db = db::DB::new().await?;
     let addr = "0.0.0.0:8080".parse()?;
-    info!("Server started at {addr}");
+    info!("Server starting at {addr}");
 
-    let server = handler::my_server::MyServer::new(db);
+    // Read the generated descriptor set
+    let mut file = File::open("proto/base_descriptor.bin")?;
+    let mut buf = Vec::new();
+    file.read_to_end(buf.as_mut())?;
+
+    let reflection_service = tonic_reflection::server::Builder::configure()
+        .register_encoded_file_descriptor_set(&buf)
+        .build()?;
+
     Server::builder()
-        .add_service(RootServer::new(server))
+        .add_service(reflection_service)
+        .add_service(TranslationsServer::new(
+            handler::translations::TranslationsServer::new(db),
+        ))
+        .add_service(HealthServer::new(handler::health::HealthServer::default()))
+        .add_service(HelloServer::new(handler::hello::HelloServer::default()))
+        .add_service(NumbersServer::new(
+            handler::numbers::NumbersServer::default(),
+        ))
         .serve(addr)
         .await?;
 
