@@ -1,6 +1,5 @@
 use crate::base::health_server::Health;
 use crate::health::{HealthCheckResponse, ServingStatus};
-use log::debug;
 use tonic::{Request, Response, Status};
 
 #[derive(Default, Debug, Clone)]
@@ -14,7 +13,6 @@ impl Health for HealthServer {
         let response = HealthCheckResponse {
             status: status as i32,
         };
-        debug!("health check response: {:?}", response);
         Ok(Response::new(response))
     }
 }

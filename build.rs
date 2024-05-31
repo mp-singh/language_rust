@@ -1,10 +1,5 @@
 fn main() {
-    let proto_files = &[
-        "proto/hello.proto",
-        "proto/add_numbers.proto",
-        "proto/base.proto",
-        "proto/language.proto",
-    ];
+    let proto_files = &["proto/base.proto"];
     tonic_build::configure()
         .build_server(true)
         .file_descriptor_set_path("proto/base_descriptor.bin")
