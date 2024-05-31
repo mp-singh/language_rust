@@ -8,7 +8,6 @@ pub struct HealthServer {}
 #[tonic::async_trait]
 impl Health for HealthServer {
     async fn check(&self, _: Request<()>) -> Result<Response<HealthCheckResponse>, Status> {
-        debug!("health check");
         let status = ServingStatus::Good;
         let response = HealthCheckResponse {
             status: status as i32,

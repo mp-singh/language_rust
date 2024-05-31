@@ -4,13 +4,15 @@ use crate::base::{
 };
 use log::info;
 use simplelog::{ColorChoice, CombinedLogger, LevelFilter, TermLogger, TerminalMode};
-use std::{fs::File, io::Read};
 use tonic::transport::Server;
+
 pub mod hello {
     tonic::include_proto!("hello");
 }
 pub mod base {
     tonic::include_proto!("base");
+    pub(crate) const FILE_DESCRIPTOR_SET: &[u8] =
+        tonic::include_file_descriptor_set!("base_descriptor");
 }
 pub mod add_numbers {
     tonic::include_proto!("add_numbers");
@@ -31,6 +33,7 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
     let term_config = simplelog::ConfigBuilder::new()
         .set_location_level(LevelFilter::Debug)
         .add_filter_ignore_str("h2")
+        .add_filter_ignore_str("sqlx::query")
         .build();
 
     CombinedLogger::init(vec![TermLogger::new(
@@ -45,13 +48,8 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
     let addr = "0.0.0.0:8080".parse()?;
     info!("Server starting at {addr}");
 
-    // Read the generated descriptor set
-    let mut file = File::open("proto/base_descriptor.bin")?;
-    let mut buf = Vec::new();
-    file.read_to_end(buf.as_mut())?;
-
     let reflection_service = tonic_reflection::server::Builder::configure()
-        .register_encoded_file_descriptor_set(&buf)
+        .register_encoded_file_descriptor_set(base::FILE_DESCRIPTOR_SET)
         .build()?;
 
     Server::builder()
