@@ -8,7 +8,6 @@ fn main() {
     tonic_build::configure()
         .build_server(true)
         .file_descriptor_set_path("proto/base_descriptor.bin")
-        .out_dir("./src")
         .compile(proto_files, &["proto"])
         .unwrap_or_else(|e| panic!("protobuf compile error: {}", e));
 
